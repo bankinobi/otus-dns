@@ -1,0 +1,9 @@
+---
+- name: Provision dns-lab
+  become: yes
+  hosts: all
+
+  # vars:
+   
+  roles:
+   - dns-lab

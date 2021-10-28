@@ -1,0 +1,25 @@
+---
+- name: install packages
+  yum: 
+    name: "{{ item }} "
+    state: latest 
+  with_items:
+    - bind
+    - bind-utils
+    - ntp
+
+- name: copy transferkey to all servers and the client
+  copy: 
+    src: zonetransfer.key 
+    dest: /etc/named.zonetransfer.key 
+    owner: root 
+    group: named 
+    mode: 0644
+
+- name: Include NS tasks
+  include_tasks: ns.yml
+  when: '"ns" in inventory_hostname'
+
+- name: Include client tasks
+  include_tasks: client.yml
+  when: '"client" in inventory_hostname'
